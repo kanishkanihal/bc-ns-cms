@@ -1,0 +1,26 @@
+{
+  "name": "bc-ns-cms",
+  "version": "1.0.0",
+  "description": "CMS block module for the bigcommerce",
+  "main": "app.js",
+  "author": "Chanaru Sampath",
+  "license": "MIT",
+  "scripts": {
+    "client-install": "npm install --prefix client",
+    "start": "node app.js",
+    "server": "nodemon app.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "pre-build": "npm install --prefix client && npm run build --prefix client"
+  },
+  "dependencies": {
+    "express": "^4.16.4",
+    "express-promise-router": "^3.0.3",
+    "morgan": "^1.9.1",
+    "mysql": "^2.16.0"
+  },
+  "devDependencies": {
+    "concurrently": "^4.1.0",
+    "nodemon": "^1.18.10"
+  }
+}
