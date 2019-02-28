@@ -1,5 +1,7 @@
 const express = require("express");
 const logger = require("morgan");
+const bodyParser = require("body-parser");
+const cors = require("cors");
 
 const CMSRoutes = require("./routes/cmsRoute");
 const database = require("./config/databaseConfig");
@@ -8,13 +10,19 @@ const database = require("./config/databaseConfig");
 const app = express();
 
 //Connect the database
-database.connect(err => {
-  if (err) throw err;
-  console.log(`MySql database is connected...`);
-});
+database
+  .authenticate()
+  .then(() => {
+    console.log("Connection has been established successfully.");
+  })
+  .catch(err => {
+    console.error("Unable to connect to the database:", err);
+  });
 
 //Middlewares
 app.use(logger("dev"));
+app.use(bodyParser.json());
+app.use(cors());
 
 //Routes
 app.use("/api/cms", CMSRoutes);
