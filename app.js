@@ -4,20 +4,10 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 
 const CMSRoutes = require("./routes/cmsRoute");
-const database = require("./config/databaseConfig");
 
 //Initialize the express application
 const app = express();
 
-//Connect the database
-database
-  .authenticate()
-  .then(() => {
-    console.log("Connection has been established successfully.");
-  })
-  .catch(err => {
-    console.error("Unable to connect to the database:", err);
-  });
 
 //Middlewares
 app.use(logger("dev"));
