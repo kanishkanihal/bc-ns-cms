@@ -1,4 +1,6 @@
-import React, { Component } from "react";
+import React from "react";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -7,16 +9,25 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Switch from "@material-ui/core/Switch";
+import IconButton from "@material-ui/core/IconButton";
+import EditIcon from "@material-ui/icons/Edit";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import CKEditor from "ckeditor4-react";
 
-class AddCMSBlock extends Component {
+const styles = theme => ({
+  button: {
+    margin: theme.spacing.unit
+  }
+});
+
+class EditCMSBlock extends React.Component {
   state = {
     open: false,
-    code: "",
-    title: "",
-    content: "",
-    status: true
+    id: this.props.cmsBlock.id,
+    code: this.props.cmsBlock.code,
+    title: this.props.cmsBlock.title,
+    content: this.props.cmsBlock.content,
+    status: this.props.cmsBlock.status
   };
 
   handleClickOpen = () => {
@@ -43,28 +54,30 @@ class AddCMSBlock extends Component {
     this.setState({ [name]: event.target.checked });
   };
 
-  submitForm = e => {
-    const { code, title, content, status } = this.state;
-    const newCMSBlock = {
+  editForm = e => {
+    const { id, code, title, content, status } = this.state;
+    const editedCMSBlock = {
+      id,
       code,
       title,
       content,
       status
     };
-    this.props.addCMSBlock(newCMSBlock);
+    this.props.editCMSBlock(id, editedCMSBlock);
     this.handleClose();
   };
 
   render() {
+    const { classes } = this.props;
     return (
       <div>
-        <Button
-          variant="outlined"
-          color="primary"
+        <IconButton
+          className={classes.button}
+          aria-label="Delete"
           onClick={this.handleClickOpen}
         >
-          Add CMS Blocks
-        </Button>
+          <EditIcon color="primary" />
+        </IconButton>
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}
@@ -118,8 +131,8 @@ class AddCMSBlock extends Component {
             <Button onClick={this.handleClose} color="primary">
               Cancel
             </Button>
-            <Button onClick={this.submitForm} color="primary">
-              Add
+            <Button onClick={this.editForm} color="primary">
+              Edit
             </Button>
           </DialogActions>
         </Dialog>
@@ -128,4 +141,8 @@ class AddCMSBlock extends Component {
   }
 }
 
-export default AddCMSBlock;
+EditCMSBlock.propTypes = {
+  classes: PropTypes.object.isRequired
+};
+
+export default withStyles(styles)(EditCMSBlock);
