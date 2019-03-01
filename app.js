@@ -8,7 +8,6 @@ const CMSRoutes = require("./routes/cmsRoute");
 //Initialize the express application
 const app = express();
 
-
 //Middlewares
 app.use(logger("dev"));
 app.use(bodyParser.json());
