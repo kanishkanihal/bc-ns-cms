@@ -12,6 +12,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import { lighten } from "@material-ui/core/styles/colorManipulator";
+import ActionButtons from "./ActionButtons";
 
 const rows = [
   { id: "code", disablePadding: true, label: "Code" },
@@ -102,13 +103,16 @@ const styles = theme => ({
   },
   tableWrapper: {
     overflowX: "auto"
+  },
+  actionArea: {
+    display: "flex",
+    justifyContent: "center"
   }
 });
 
 class CMSBlocks extends React.Component {
   state = {
     page: 0,
-    cmsBlocks: this.props.cmsBlocks,
     rowsPerPage: 5
   };
 
@@ -121,8 +125,8 @@ class CMSBlocks extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
-    const { cmsBlocks, rowsPerPage, page } = this.state;
+    const { classes, cmsBlocks } = this.props;
+    const { rowsPerPage, page } = this.state;
 
     const emptyRows =
       rowsPerPage -
@@ -135,23 +139,34 @@ class CMSBlocks extends React.Component {
           <Table className={classes.table} aria-labelledby="tableTitle">
             <EnhancedTableHead rowCount={cmsBlocks.length} />
             <TableBody>
-              {cmsBlocks.map(cmsBlock => {
-                return (
-                  <TableRow key={cmsBlock.code}>
-                    <TableCell
-                      align="center"
-                      component="th"
-                      scope="row"
-                      padding="none"
-                    >
-                      {cmsBlock.code}
-                    </TableCell>
-                    <TableCell align="center">{cmsBlock.title}</TableCell>
-                    <TableCell align="center">b</TableCell>
-                    <TableCell align="center">c</TableCell>
-                  </TableRow>
-                );
-              })}
+              {cmsBlocks
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map(cmsBlock => {
+                  return (
+                    <TableRow key={cmsBlock.code}>
+                      <TableCell
+                        align="center"
+                        component="th"
+                        scope="row"
+                        padding="none"
+                      >
+                        {cmsBlock.code}
+                      </TableCell>
+                      <TableCell align="center">{cmsBlock.title}</TableCell>
+                      <TableCell align="center">
+                        {cmsBlock.status ? "Active" : "Inactive"}
+                      </TableCell>
+                      <TableCell align="center" className={classes.actionArea}>
+                        <ActionButtons
+                          cmsBlock={cmsBlock}
+                          blockCode={cmsBlock.id}
+                          deleteBlock={this.props.deleteBlock}
+                          editCMSBlock={this.props.editCMSBlock}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
               {emptyRows > 0 && (
                 <TableRow style={{ height: 49 * emptyRows }}>
                   <TableCell colSpan={6} />
