@@ -4,6 +4,8 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 
 const CMSRoutes = require("./routes/cmsRoute");
+const PageRoutes = require("./routes/pageRoute");
+const SectionRoutes = require("./routes/sectionRoute");
 
 //Initialize the express application
 const app = express();
@@ -15,6 +17,8 @@ app.use(cors());
 
 //Routes
 app.use("/api/cms", CMSRoutes);
+app.use("/api/page", PageRoutes);
+app.use("/api/section", SectionRoutes);
 
 //Catch 404 Errors and forwards them to error handler
 app.use((req, res, next) => {
