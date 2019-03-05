@@ -12,7 +12,8 @@ class App extends Component {
   };
 
   componentWillMount = async () => {
-    const responce = await axios.get("http://localhost:4000/api/cms");
+    console.log(this.props.location);
+    const responce = await axios.get("/api/cms");
     this.setState({
       cmsBlocks: responce.data
     });
@@ -30,28 +31,30 @@ class App extends Component {
       section_id: "1"
     };
 
-    const responce = await axios.post(
-      "http://localhost:4000/api/cms",
-      newBlock
-    );
+    try {
+      console.log(this.props.location);
+      const responce = await axios.post("/api/cms", newBlock);
 
-    this.setState({
-      cmsBlocks: [newBlock, ...this.state.cmsBlocks]
-    });
+      this.setState({
+        cmsBlocks: [newBlock, ...this.state.cmsBlocks]
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   //delete an exsiting cms block.
   deleteBlock = async id => {
-    console.log("id", id);
-    const responce = await axios.delete("http://localhost:4000/api/cms", {
-      data: id
-    });
-
-    console.log("responce", responce);
-
-    this.setState({
-      cmsBlocks: this.state.cmsBlocks.filter(block => block.id !== id)
-    });
+    try {
+      const responce = await axios.delete("/api/cms", {
+        data: { id }
+      });
+      this.setState({
+        cmsBlocks: this.state.cmsBlocks.filter(block => block.id !== id)
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   //edit an exsiting cms block
