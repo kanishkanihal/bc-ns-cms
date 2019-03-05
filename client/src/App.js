@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import axios from "axios";
 import "./App.css";
 
 import AppBar from "./components/AppBar";
@@ -7,75 +8,32 @@ import CMSBlocks from "./components/CMSBlocks";
 
 class App extends Component {
   state = {
-    cmsBlocks: [
-      {
-        id: 1,
-        code: "fgdb111",
-        title: "title1",
-        content: "content1",
-        status: true
-      },
-      {
-        id: 2,
-        code: "fgdb222",
-        title: "title2",
-        content: "content2",
-        status: false
-      },
-      {
-        id: 3,
-        code: "fgdb333",
-        title: "title3",
-        content: "content3",
-        status: true
-      },
-      {
-        id: 4,
-        code: "fgdb444",
-        title: "title4",
-        content: "content4",
-        status: false
-      },
-      {
-        id: 5,
-        code: "fgdb555",
-        title: "title1",
-        content: "content1",
-        status: true
-      },
-      {
-        id: 6,
-        code: "fgdb666",
-        title: "title2",
-        content: "content2",
-        status: false
-      },
-      {
-        id: 7,
-        code: "fgdb777",
-        title: "title3",
-        content: "content3",
-        status: true
-      },
-      {
-        id: 8,
-        code: "fgdb888",
-        title: "title4",
-        content: "content4",
-        status: false
-      }
-    ]
+    cmsBlocks: []
+  };
+
+  componentWillMount = async () => {
+    const responce = await axios.get("http://localhost:4000/api/cms");
+    this.setState({
+      cmsBlocks: responce.data
+    });
   };
 
   //Add cms blocks
-  addCMSBlock = block => {
+  addCMSBlock = async block => {
     const newBlock = {
-      id: this.state.cmsBlocks.length + 1,
       code: block.code,
       title: block.title,
       content: block.content,
-      status: block.status
+      status: block.status,
+      client_id: "1",
+      page_id: "1",
+      section_id: "1"
     };
+
+    const responce = await axios.post(
+      "http://localhost:4000/api/cms",
+      newBlock
+    );
 
     this.setState({
       cmsBlocks: [newBlock, ...this.state.cmsBlocks]
@@ -83,7 +41,14 @@ class App extends Component {
   };
 
   //delete an exsiting cms block.
-  deleteBlock = id => {
+  deleteBlock = async id => {
+    console.log("id", id);
+    const responce = await axios.delete("http://localhost:4000/api/cms", {
+      data: id
+    });
+
+    console.log("responce", responce);
+
     this.setState({
       cmsBlocks: this.state.cmsBlocks.filter(block => block.id !== id)
     });
