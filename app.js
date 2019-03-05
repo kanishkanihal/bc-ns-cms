@@ -25,7 +25,10 @@ app.use("/api/section", SectionRoutes);
 app.use("/bc", BcRoutes);
 
 //Static files
-app.use(express.static("public"));
+//app.use(express.static("public"));
+if (true) {
+  app.use(express.static("client/build"));
+}
 
 //Catch 404 Errors and forwards them to error handler
 app.use((req, res, next) => {
