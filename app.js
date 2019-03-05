@@ -3,6 +3,7 @@ const logger = require("morgan");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
+const ClientRoute = require("./routes/clientRoute");
 const CMSRoutes = require("./routes/cmsRoute");
 const PageRoutes = require("./routes/pageRoute");
 const SectionRoutes = require("./routes/sectionRoute");
@@ -17,6 +18,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 //Routes
+app.use("/api/client", ClientRoute);
 app.use("/api/cms", CMSRoutes);
 app.use("/api/page", PageRoutes);
 app.use("/api/section", SectionRoutes);
