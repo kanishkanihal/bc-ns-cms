@@ -59,14 +59,20 @@ class App extends Component {
 
   //edit an exsiting cms block
   editCMSBlock = (id, data) => {
-    this.setState({
-      cmsBlocks: this.state.cmsBlocks.map(block => {
-        if (block.id === id) {
-          block = data;
-        }
-        return block;
-      })
-    });
+    try {
+      const responce = axios.put(`api/cms/${id}`, data);
+
+      this.setState({
+        cmsBlocks: this.state.cmsBlocks.map(block => {
+          if (block.id === id) {
+            block = data;
+          }
+          return block;
+        })
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   render() {
