@@ -7,10 +7,20 @@ module.exports = {
     block.findAll().then(result => res.json(result));
   },
   findById: async (req, res, next) => {
-    var result = await block.findAll({
+    var result = await block.findAndCountAll({
       where: {
         id: req.params.id
-      }
+      },
+      limit: 1
+    });
+    res.json(result);
+  },
+  findByHash: async (req, res, next) => {
+    var result = await block.findAndCountAll({
+      where: {
+        hashCode: req.params.id
+      },
+      limit: 1
     });
     res.json(result);
   },
