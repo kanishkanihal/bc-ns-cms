@@ -3,7 +3,7 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface
-      .addColumn("Clients", "bcUserId", {
+      .addColumn("Clients", "storeHash", {
         type: Sequelize.STRING(64),
         allowNull: true
       })

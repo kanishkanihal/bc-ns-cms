@@ -49,7 +49,7 @@ var auth = async (req, res, next) => {
 
     //Update client by inserting the Bigcommerce User ID
     await axios.put(`${host}/api/client/${client.id}`, {
-      bcUserId: data.user.id
+      storeHash: storehash
     });
     //Set cookies
     res.cookie(`access_token`, data.access_token);
