@@ -1,5 +1,6 @@
 const db = require("../models/index");
 const block = db.Block;
+var storehash = req.session.storehash;
 module.exports = {
   findAll: async (req, res, next) => {
     var result = await block.findAll();

@@ -51,9 +51,10 @@ var auth = async (req, res, next) => {
     await axios.put(`${host}/api/client/${client.id}`, {
       storeHash: storehash
     });
-    //Set cookies
-    res.cookie(`access_token`, data.access_token);
-    res.cookie(`storehash`, storehash);
+    //Set sessions
+    req.session.access_token = data.access_token;
+    req.session.clientId = client.id;
+
     //Show instalation success message.
     res.sendFile("images/success.png", appOptions);
   } catch (error) {
@@ -64,8 +65,11 @@ var auth = async (req, res, next) => {
 };
 //load
 var load = async (req, res, next) => {
-  //const data = bigCommerce.verify(req.query["signed_payload"]);
-  res.sendFile("index.html", options);
+  try {
+    res.sendFile("index.html", options);
+  } catch (error) {
+    res.sendFile("images/error.png", appOptions);
+  }
 };
 
 module.exports = { auth, load };

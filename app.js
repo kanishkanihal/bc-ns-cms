@@ -2,6 +2,8 @@ const express = require("express");
 const logger = require("morgan");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
+const cookieSession = require("cookie-session");
 
 const ClientRoute = require("./routes/clientRoute");
 const CMSRoutes = require("./routes/cmsRoute");
@@ -16,6 +18,17 @@ const app = express();
 app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(cors());
+
+//Session
+app.use(cookieParser());
+app.set("trust proxy", 1); // trust first proxy
+
+app.use(
+  cookieSession({
+    name: "session",
+    keys: ["key1", "key2"]
+  })
+);
 
 //Routes
 app.use("/api/client", ClientRoute);
