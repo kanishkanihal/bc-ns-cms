@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     "Client",
     {
       email: DataTypes.STRING,
-      bcUserId: DataTypes.STRING,
+      storeHash: DataTypes.STRING,
       bcClientId: DataTypes.STRING,
       bcClientSecret: DataTypes.STRING,
       hashCode: DataTypes.STRING

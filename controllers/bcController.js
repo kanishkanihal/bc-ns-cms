@@ -1,7 +1,8 @@
 const env = process.env.NODE_ENV || "development";
 const BigCommerce = require("node-bigcommerce");
 const axios = require("axios");
-
+const db = require("../models/index");
+const site = db.Site;
 const bcSetting = {
   logLevel: "info",
   callback: process.env.BC_CALLBACK,
@@ -47,13 +48,18 @@ var auth = async (req, res, next) => {
     var data = await bigCommerce.authorize(req.query); //Bigcommerce authorize
     var storehash = data.context.split("/")[1]; //Getting the store hash
 
-    //Update client by inserting the Bigcommerce User ID
-    await axios.put(`${host}/api/client/${client.id}`, {
-      bcUserId: data.user.id
+    //Find of create site.
+    const [clientSite, created] = await site.findOrCreate({
+      where: {
+        client_id: client.id,
+        store_hash: storehash
+      }
     });
-    //Set cookies
-    res.cookie(`access_token`, data.access_token);
-    res.cookie(`storehash`, storehash);
+    var siteId = clientSite.id;
+    //Set sessions
+    req.session.access_token = data.access_token;
+    req.session.site_id = siteId;
+
     //Show instalation success message.
     res.sendFile("images/success.png", appOptions);
   } catch (error) {
@@ -64,8 +70,11 @@ var auth = async (req, res, next) => {
 };
 //load
 var load = async (req, res, next) => {
-  //const data = bigCommerce.verify(req.query["signed_payload"]);
-  res.sendFile("index.html", options);
+  try {
+    res.sendFile("index.html", options);
+  } catch (error) {
+    res.sendFile("images/error.png", appOptions);
+  }
 };
 
 module.exports = { auth, load };

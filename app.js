@@ -2,12 +2,15 @@ const express = require("express");
 const logger = require("morgan");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
+const cookieSession = require("cookie-session");
 
 const ClientRoute = require("./routes/clientRoute");
 const CMSRoutes = require("./routes/cmsRoute");
 const PageRoutes = require("./routes/pageRoute");
 const SectionRoutes = require("./routes/sectionRoute");
 const BcRoutes = require("./routes/bcRoute");
+const SiteRoutes = require("./routes/siteRoute");
 
 //Initialize the express application
 const app = express();
@@ -17,12 +20,24 @@ app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(cors());
 
+//Session
+app.use(cookieParser());
+app.set("trust proxy", 1); // trust first proxy
+
+app.use(
+  cookieSession({
+    name: "session",
+    keys: ["key1", "key2"]
+  })
+);
+
 //Routes
 app.use("/api/client", ClientRoute);
 app.use("/api/cms", CMSRoutes);
 app.use("/api/page", PageRoutes);
 app.use("/api/section", SectionRoutes);
 app.use("/bc", BcRoutes);
+app.use("/api/site", SiteRoutes);
 
 //Static files
 //app.use(express.static("public"));
