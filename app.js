@@ -10,6 +10,7 @@ const CMSRoutes = require("./routes/cmsRoute");
 const PageRoutes = require("./routes/pageRoute");
 const SectionRoutes = require("./routes/sectionRoute");
 const BcRoutes = require("./routes/bcRoute");
+const SiteRoutes = require("./routes/siteRoute");
 
 //Initialize the express application
 const app = express();
@@ -36,6 +37,7 @@ app.use("/api/cms", CMSRoutes);
 app.use("/api/page", PageRoutes);
 app.use("/api/section", SectionRoutes);
 app.use("/bc", BcRoutes);
+app.use("/api/site", SiteRoutes);
 
 //Static files
 //app.use(express.static("public"));
