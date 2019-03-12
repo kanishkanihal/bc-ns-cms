@@ -37,6 +37,7 @@ router.get(
       });
 
       req.session.site_id = clientSite.id;
+      req.session.store_hash = storeHash;
     } catch (error) {
       console.log(error);
       next(error);
