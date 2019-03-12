@@ -11,6 +11,7 @@ const PageRoutes = require("./routes/pageRoute");
 const SectionRoutes = require("./routes/sectionRoute");
 const BcRoutes = require("./routes/bcRoute");
 const SiteRoutes = require("./routes/siteRoute");
+//const BlockRoutes = require("./routes/blockRoute");
 
 //Initialize the express application
 const app = express();
@@ -38,6 +39,7 @@ app.use("/api/page", PageRoutes);
 app.use("/api/section", SectionRoutes);
 app.use("/bc", BcRoutes);
 app.use("/api/site", SiteRoutes);
+//app.use("/api/block", BlockRoutes);
 
 //Static files
 //app.use(express.static("public"));
