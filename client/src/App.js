@@ -27,8 +27,8 @@ class App extends Component {
       content: block.content,
       status: block.status,
       client_id: "1",
-      page_id: "1",
-      section_id: "1"
+      page_id: block.page_id,
+      section_id: block.section_id
     };
 
     try {
