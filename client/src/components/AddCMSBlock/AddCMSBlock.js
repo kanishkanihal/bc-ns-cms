@@ -9,6 +9,8 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Switch from "@material-ui/core/Switch";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import CKEditor from "ckeditor4-react";
+import Select from "@material-ui/core/Select";
+import InputLabel from "@material-ui/core/InputLabel";
 
 class AddCMSBlock extends Component {
   state = {
@@ -16,6 +18,8 @@ class AddCMSBlock extends Component {
     code: "",
     title: "",
     content: "",
+    section_id: "",
+    page_id: "",
     status: true
   };
 
@@ -44,12 +48,14 @@ class AddCMSBlock extends Component {
   };
 
   submitForm = e => {
-    const { code, title, content, status } = this.state;
+    const { code, title, content, status, section_id, page_id } = this.state;
     const newCMSBlock = {
       code,
       title,
       content,
-      status
+      status,
+      section_id,
+      page_id
     };
     this.props.addCMSBlock(newCMSBlock);
     this.handleClose();
@@ -97,6 +103,39 @@ class AddCMSBlock extends Component {
               onChange={this.handelChange}
               fullWidth
             />
+            <InputLabel htmlFor="age-simple">Section</InputLabel>
+            <Select
+              native
+              value={this.state.section_id}
+              onChange={this.handelChange}
+              inputProps={{
+                name: "section_id",
+                id: "section_id"
+              }}
+            >
+              <option value={1}>Section 1</option>
+              <option value={2}>Section 2</option>
+              <option value={3}>Section 3</option>
+              <option value={4}>Section 4</option>
+              <option value={5}>Section 5</option>
+            </Select>
+
+            <InputLabel htmlFor="age-simple">Page</InputLabel>
+            <Select
+              native
+              value={this.state.page_id}
+              onChange={this.handelChange}
+              inputProps={{
+                name: "page_id",
+                id: "page_id"
+              }}
+            >
+              <option value={1}>All</option>
+              <option value={2}>Checkout</option>
+              <option value={3}>Store Pages</option>
+              <option value={4}>Order confirmation</option>
+            </Select>
+
             <FormControlLabel
               label="status"
               control={
