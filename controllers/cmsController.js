@@ -6,17 +6,22 @@ module.exports = {
   findAll: async (req, res, next) => {
     var storehash =
       req.session.store_hash != undefined
-        ? req.session.site_id
+        ? req.session.store_hash
         : req.params.hash;
-    var result = await block.findAll({
-      include: [
-        {
-          model: site,
-          attributes: ["id", "store_hash"],
-          where: { store_hash: storehash }
-        }
-      ]
-    });
+    try {
+      var result = await block.findAll({
+        include: [
+          {
+            model: site,
+            attributes: ["store_hash"],
+            where: { store_hash: storehash }
+          }
+        ]
+      });
+    } catch (error) {
+      console.log(error);
+    }
+
     res.json(result);
   },
   findById: async (req, res, next) => {
