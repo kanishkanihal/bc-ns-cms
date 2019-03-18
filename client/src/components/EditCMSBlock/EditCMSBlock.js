@@ -13,6 +13,8 @@ import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@material-ui/icons/Edit";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import CKEditor from "ckeditor4-react";
+import Select from "@material-ui/core/Select";
+import InputLabel from "@material-ui/core/InputLabel";
 
 const styles = theme => ({
   button: {
@@ -27,6 +29,8 @@ class EditCMSBlock extends React.Component {
     code: this.props.cmsBlock.code,
     title: this.props.cmsBlock.title,
     content: this.props.cmsBlock.content,
+    section_id: this.props.cmsBlock.section_id,
+    page_id: this.props.cmsBlock.page_id,
     status: this.props.cmsBlock.status
   };
 
@@ -55,12 +59,22 @@ class EditCMSBlock extends React.Component {
   };
 
   editForm = e => {
-    const { id, code, title, content, status } = this.state;
+    const {
+      id,
+      code,
+      title,
+      content,
+      status,
+      section_id,
+      page_id
+    } = this.state;
     const editedCMSBlock = {
       id,
       code,
       title,
       content,
+      section_id,
+      page_id,
       status
     };
     this.props.editCMSBlock(id, editedCMSBlock);
@@ -110,6 +124,38 @@ class EditCMSBlock extends React.Component {
               onChange={this.handelChange}
               fullWidth
             />
+            <InputLabel htmlFor="age-simple">Section</InputLabel>
+            <Select
+              native
+              value={this.state.section_id}
+              onChange={this.handelChange}
+              inputProps={{
+                name: "section_id",
+                id: "section_id"
+              }}
+            >
+              <option value={1}>Section 1</option>
+              <option value={2}>Section 2</option>
+              <option value={3}>Section 3</option>
+              <option value={4}>Section 4</option>
+              <option value={5}>Section 5</option>
+            </Select>
+
+            <InputLabel htmlFor="age-simple">Page</InputLabel>
+            <Select
+              native
+              value={this.state.page_id}
+              onChange={this.handelChange}
+              inputProps={{
+                name: "page_id",
+                id: "page_id"
+              }}
+            >
+              <option value={1}>All</option>
+              <option value={2}>Checkout</option>
+              <option value={3}>Store Pages</option>
+              <option value={4}>Order confirmation</option>
+            </Select>
             <FormControlLabel
               label="status"
               control={
