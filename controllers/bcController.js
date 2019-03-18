@@ -68,7 +68,7 @@ var auth = async (req, res, next) => {
     bcSetting.storeHash = storehash;
     bcSetting.apiVersion = "v3";
 
-    var bigCommerce = new BigCommerce(bcSetting);
+    var bc = new BigCommerce(bcSetting);
     var scriptData = {
       name: "Ns CMS Block",
       description: "CMS Block load the content from the API",
