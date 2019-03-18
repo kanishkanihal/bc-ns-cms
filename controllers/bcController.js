@@ -79,7 +79,7 @@ var auth = async (req, res, next) => {
               blocks.forEach(function (block) { 
                 var pid = block.page_id;
                 var sid = block.section_id;
-                    var ele = document.querySelector("#cms-block-${pid}-${sid}"); 
+                    var ele = document.querySelector("#cms-block-"+pid+"-"+sid); 
                     ele.innerHTML = block.content; }); 
         }).catch(function (err) {
             return console.log(err); 
