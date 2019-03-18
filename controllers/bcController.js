@@ -65,7 +65,13 @@ var auth = async (req, res, next) => {
     bcSetting.storeHash = storehash;
     bcSetting.apiVersion = "v3";
 
-    var bc = new BigCommerce(bcSetting);
+    var bc = new BigCommerce({
+      clientId: client.bcClientId,
+      accessToken: data.access_token,
+      storeHash: storehash,
+      responseType: "json",
+      apiVersion: "v3"
+    });
     var scriptData = {
       name: "Ns CMS Block",
       description: "CMS Block load the content from the API",
@@ -89,7 +95,12 @@ var auth = async (req, res, next) => {
       visibility: "all_pages",
       kind: "script_tag"
     };
-    var response = await bc.post("/content/scripts", scriptData);
+    try {
+      var response = await bc.post("/content/scripts", scriptData);
+    } catch (e) {
+      console.log(e);
+    }
+
     //Show instalation success message.
     res.sendFile("images/success.png", appOptions);
   } catch (error) {
