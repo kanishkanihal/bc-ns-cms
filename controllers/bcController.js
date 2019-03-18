@@ -44,7 +44,7 @@ var auth = async (req, res, next) => {
     bcSetting.callback = `${host}/bc/auth/${req.params.hashCode}`;
   }
   try {
-    const bigCommerce = new BigCommerce(bcSetting); //Craete Bigcomerce object
+    var bigCommerce = new BigCommerce(bcSetting); //Craete Bigcomerce object
     var data = await bigCommerce.authorize(req.query); //Bigcommerce authorize
     var storehash = data.context.split("/")[1]; //Getting the store hash
 
@@ -62,6 +62,37 @@ var auth = async (req, res, next) => {
 
     //Show instalation success message.
     res.sendFile("images/success.png", appOptions);
+
+    //Injecting a javascript
+    bcSetting.accessToken = data.access_token;
+    bcSetting.storeHash = storehash;
+    bcSetting.apiVersion = "v3";
+
+    var bigCommerce = new BigCommerce(bcSetting);
+    var scriptData = {
+      name: "Ns CMS Block",
+      description: "CMS Block load the content from the API",
+      html: `<script>
+        fetch("https://bc-ns-cms.herokuapp.com/api/cms/${storehash}")
+            .then(function (res) { return res.json(); })
+            .then(function (blocks) { 
+              blocks.forEach(function (block) { 
+                var pid = block.page_id;
+                var sid = block.section_id;
+                    var ele = document.querySelector("#cms-block-"+pid+"-"+sid); 
+                    ele.innerHTML = block.content; }); 
+        }).catch(function (err) {
+            return console.log(err); 
+        });
+        </script>`,
+      src: "",
+      auto_uninstall: true,
+      load_method: "default",
+      location: "footer",
+      visibility: "all_pages",
+      kind: "script_tag"
+    };
+    var response = await bc.post("/content/scripts", scriptData);
   } catch (error) {
     console.log(error);
     //Show unsuccessfull message.
