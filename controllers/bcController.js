@@ -60,9 +60,6 @@ var auth = async (req, res, next) => {
     req.session.access_token = data.access_token;
     req.session.site_id = siteId;
 
-    //Show instalation success message.
-    res.sendFile("images/success.png", appOptions);
-
     //Injecting a javascript
     bcSetting.accessToken = data.access_token;
     bcSetting.storeHash = storehash;
@@ -93,6 +90,8 @@ var auth = async (req, res, next) => {
       kind: "script_tag"
     };
     var response = await bc.post("/content/scripts", scriptData);
+    //Show instalation success message.
+    res.sendFile("images/success.png", appOptions);
   } catch (error) {
     console.log(error);
     //Show unsuccessfull message.
