@@ -132,14 +132,6 @@ var auth = async (req, res, next) => {
 //load
 var load = async (req, res, next) => {
   try {
-    //Json to encode
-    // var obj = { name: "John", age: 30, city: "New York" };
-
-    //Base 64 decode
-    //var decoded = Buffer.from(encoded, "base64").toString();
-    //Convert to a json
-    //var objx = JSON.parse(decoded);
-
     res.sendFile("index.html", options);
   } catch (error) {
     res.sendFile("images/error.png", appOptions);
