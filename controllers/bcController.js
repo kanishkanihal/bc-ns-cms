@@ -1,6 +1,7 @@
 const env = process.env.NODE_ENV || "development";
 const BigCommerce = require("node-bigcommerce");
 const axios = require("axios");
+const crypto = require("crypto");
 const db = require("../models/index");
 const site = db.Site;
 const bcSetting = {
@@ -55,6 +56,25 @@ var auth = async (req, res, next) => {
         store_hash: storehash
       }
     });
+    //Save store information as a encoded string - Start
+    //Add salt
+    var salt = process.env.SECRET_KEY;
+
+    //Convert json to a string and add salt.
+    var buf = Buffer.from(JSON.stringify(data));
+    //Base 64 encode
+    var encoded = buf.toString("base64");
+    var result = await site.update(
+      { site_info: encoded },
+      {
+        where: {
+          client_id: client.id,
+          store_hash: storehash
+        }
+      }
+    );
+    //Save store information as a encoded string - End
+
     var siteId = clientSite.id;
     //Set sessions
     req.session.access_token = data.access_token;
