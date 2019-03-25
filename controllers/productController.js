@@ -43,7 +43,9 @@ module.exports = {
         : 6;
     //Getting the category By ID
     bigCommerce
-      .get(`/catalog/products/?limit=${limit}&categories:in=${categoryId}`)
+      .get(
+        `/catalog/products/?limit=${limit}&categories:in=${categoryId}&include=images,primary_image`
+      )
       .then(data => {
         res.json(data);
       })
