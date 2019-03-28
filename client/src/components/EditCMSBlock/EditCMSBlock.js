@@ -170,6 +170,9 @@ class EditCMSBlock extends React.Component {
 
             <CKEditor
               data={this.state.content}
+              config={{
+                autoParagraph: false
+              }}
               onChange={this.handelContentChange}
             />
           </DialogContent>
