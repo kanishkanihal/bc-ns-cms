@@ -150,6 +150,10 @@ class AddCMSBlock extends Component {
 
             <CKEditor
               data={this.state.content}
+              config={{
+                autoParagraph: false,
+                enterMode: 2
+              }}
               onChange={this.handelContentChange}
             />
           </DialogContent>
