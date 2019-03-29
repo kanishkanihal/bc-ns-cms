@@ -171,8 +171,7 @@ class EditCMSBlock extends React.Component {
             <CKEditor
               data={this.state.content}
               config={{
-                autoParagraph: false,
-                enterMode: 2
+                allowedContent: true
               }}
               onChange={this.handelContentChange}
             />
